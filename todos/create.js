@@ -7,7 +7,7 @@ module.exports.create = (event, context, callback) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);
   if (typeof data.text !== 'string') {
-    console.error('Validation Failed');
+    console.error('Validation Failed (text)');
     callback(null, {
       statusCode: 400,
       headers: { 'Content-Type': 'text/plain' },
