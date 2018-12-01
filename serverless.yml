@@ -21,6 +21,7 @@ provider:
   runtime: nodejs4.3
   environment:
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
   iamRoleStatements:
     - Effect: "Allow"
       Action:
