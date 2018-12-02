@@ -1,4 +1,4 @@
-service: kinetic
+service: kinetic-api
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
@@ -8,6 +8,7 @@ plugins:
   - serverless-plugin-tracing
 
 custom:
+  stage: ${opt:stage, self:provider.stage}
   dynamodb:
     start:
       port: 8000
@@ -19,9 +20,11 @@ custom:
 provider:
   name: aws
   runtime: nodejs4.3
+  profile: serverless-agent
   tracing: true
+  stage: 'dev'
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: ${self:service}-${self:custom.stage}
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
   iamRoleStatements:
     - Effect: "Allow"

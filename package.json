@@ -1,7 +1,7 @@
 {
-  "name": "kinetic",
+  "name": "kinetic-api",
   "version": "1.0.0",
-  "description": "Kinetic",
+  "description": "Kinetic API",
   "repository": "",
   "author": "Stewart Noll <stewartnoll@gmail.com>",
   "license": "MIT",
