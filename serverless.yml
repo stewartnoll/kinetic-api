@@ -24,7 +24,7 @@ provider:
   tracing: true
   stage: 'dev'
   environment:
-    DYNAMODB_TABLE: ${self:custom.stage}-${self:service}
+    DYNAMODB_TABLE: ${self:service}-${self:custom.stage}
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
   iamRoleStatements:
     - Effect: "Allow"
