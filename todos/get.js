@@ -2,40 +2,36 @@
 
 const dynamodb = require('./dynamodb');
 
-module.exports.get = (event, context, callback) => {
+module.exports.get = async (event) => {
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Key: {
       id: event.pathParameters.id,
     },
   };
-
-  // fetch todo from the database
-  dynamodb.get(params, (error, result) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { 
-          'Content-Type': 'text/plain',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true
-        },
-        body: 'Couldn\'t fetch the todo item.',
-      });
-      return;
-    }
-
-    // create a response
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(result.Item),
-      headers: {
+  let getResult = null;
+  try {
+    getResult = await dynamodb.get(params).promise();
+  } catch (error) {
+    console.error(error);
+    return {
+      statusCode: error.statusCode || 501,
+      headers: { 
+        'Content-Type': 'text/plain',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true
-      }
+      },
+      body: 'Couldn\'t fetch the todo item.',
     };
-    callback(null, response);
-  });
+  }
+
+  // create a response
+  return {
+    statusCode: 200,
+    body: JSON.stringify(getResult.Item),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true
+    }
+  };
 };

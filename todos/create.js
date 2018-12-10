@@ -3,19 +3,22 @@
 const uuid = require('uuid');
 const dynamodb = require('./dynamodb');
 
-module.exports.create = (event, context, callback) => {
-  const timestamp = new Date().getTime();
+module.exports.create = async (event) => {
   const data = JSON.parse(event.body);
   if (typeof data.text !== 'string') {
     console.error('Validation Failed (text)');
-    callback(null, {
+    return {
       statusCode: 400,
-      headers: { 'Content-Type': 'text/plain' },
+      headers: { 
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true 
+      },
       body: 'Couldn\'t create the todo item.',
-    });
-    return;
+    };
   }
 
+  const timestamp = new Date().getTime();
   const params = {
     TableName: process.env.DYNAMODB_TABLE,
     Item: {
@@ -25,35 +28,30 @@ module.exports.create = (event, context, callback) => {
       sortOrder: 0,
       createdAt: timestamp,
       updatedAt: timestamp,
-    },
-  };
-
-  // write the todo to the database
-  dynamodb.put(params, (error) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { 
-          'Content-Type': 'text/plain',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true 
-        },
-        body: 'Couldn\'t create the todo item.',
-      });
-      return;
     }
-
-    // create a response
-    const response = {
-      statusCode: 200,
-      body: JSON.stringify(params.Item),
+  };
+  try {
+    await dynamodb.put(params).promise();
+  } catch(error) {
+    console.error(error);
+    return {
+      statusCode: error.statusCode || 501,
       headers: { 
+        'Content-Type': 'text/plain',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': true 
       },
+      body: 'Couldn\'t create the todo item.',
     };
-    callback(null, response);
-  });
+  }
+
+  // create a response
+  return {
+    statusCode: 201,
+    body: JSON.stringify(params.Item),
+    headers: { 
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true 
+    },
+  };
 };

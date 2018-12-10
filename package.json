@@ -5,6 +5,11 @@
   "repository": "",
   "author": "Stewart Noll <stewartnoll@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "scripts": {
+    "serve": "sls offline start",
+    "deploy": "sls deploy"
+  },
   "dependencies": {
     "aws-sdk": "^2.12.0",
     "aws-xray-sdk": "^2.1.0",
