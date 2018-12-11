@@ -91,13 +91,15 @@ resources:
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
+          - AttributeName: sortOrder
+            AttributeType: N
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
+          - AttributeName: sortOrder
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
