@@ -27,10 +27,9 @@ module.exports.update = async (event) => {
     ExpressionAttributeValues: {
       ':text': data.text,
       ':checked': data.checked,
-      ':sortOrder': data.sortOrder,
       ':updatedAt': timestamp,
     },
-    UpdateExpression: 'SET #todo_text = :text, checked = :checked, updatedAt = :updatedAt, sortOrder = :sortOrder',
+    UpdateExpression: 'SET #todo_text = :text, checked = :checked, updatedAt = :updatedAt',
     ReturnValues: 'ALL_NEW',
   };
 

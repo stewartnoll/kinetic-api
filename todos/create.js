@@ -25,7 +25,6 @@ module.exports.create = async (event) => {
       id: uuid.v1(),
       text: data.text,
       checked: false,
-      sortOrder: 0,
       createdAt: timestamp,
       updatedAt: timestamp,
     }
