@@ -33,9 +33,8 @@ module.exports.update = async (event) => {
     ReturnValues: 'ALL_NEW',
   };
 
-  let updateResult = null;
   try {
-    updateResult = await dynamodb.update(params).promise();
+    await dynamodb.update(params).promise();
   } catch (error) {
     console.error(error);
     return {
@@ -50,8 +49,7 @@ module.exports.update = async (event) => {
   }
   // create a response
   return {
-    statusCode: 200,
-    body: JSON.stringify(updateResult.Attributes),
+    statusCode: 202,
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Credentials': true,
