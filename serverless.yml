@@ -8,7 +8,7 @@ plugins:
   - serverless-plugin-tracing
 
 custom:
-  stage: ${opt:stage, self:provider.stage}
+  stage: ${opt:stage, 'dev'}
   dynamodb:
     start:
       port: 8000
@@ -22,7 +22,7 @@ provider:
   runtime: nodejs8.10
   profile: serverless-agent
   tracing: true
-  stage: 'dev'
+  stage: ${self:custom.stage}
   environment:
     DYNAMODB_TABLE: ${self:service}-${self:custom.stage}
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
