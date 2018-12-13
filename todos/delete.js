@@ -4,7 +4,7 @@ const dynamodb = require('./dynamodb');
 
 module.exports.delete = async (event) => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.TODOS_TABLE_NAME,
     Key: {
       id: event.pathParameters.id,
     },

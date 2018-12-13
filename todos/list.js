@@ -4,7 +4,7 @@ const dynamodb = require('./dynamodb');
 
 module.exports.list = async () => {
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.TODOS_TABLE_NAME,
   };
   let scanResult = null;
   try {

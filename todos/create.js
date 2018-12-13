@@ -20,7 +20,7 @@ module.exports.create = async (event) => {
 
   const timestamp = new Date().getTime();
   const params = {
-    TableName: process.env.DYNAMODB_TABLE,
+    TableName: process.env.TODOS_TABLE_NAME,
     Item: {
       id: uuid.v1(),
       text: data.text,

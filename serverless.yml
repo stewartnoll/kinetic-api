@@ -24,7 +24,7 @@ provider:
   tracing: true
   stage: ${self:custom.stage}
   environment:
-    DYNAMODB_TABLE: ${self:service}-${self:custom.stage}
+    TODOS_TABLE_NAME: ${self:service}-${self:custom.stage}
     AWS_XRAY_CONTEXT_MISSING: LOG_ERROR
   iamRoleStatements:
     - Effect: "Allow"
@@ -41,7 +41,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE_NAME}"
 
 functions:
   create:
@@ -101,4 +101,4 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.TODOS_TABLE_NAME}
